@@ -23,6 +23,18 @@ ratesBoard.getRatesBoard = (
   })
 );
 
+// Ниже код (в коменнтарии) не работает ни в какую у меня!!! Череп сломался уже.
+// .....
+// ratesBoard.getRatesBoard = () => {
+//   ApiConnector.getStocks((callback) => {
+//     if (callback.success) {
+//       ratesBoard.clearTable();
+//       ratesBoard.fillTable(callback.data);
+//       // console.log(1);
+//     }
+//   });
+// };
+
 ratesBoard.getRatesBoard = setTimeout(function () {
   ratesBoard.getRatesBoard = setTimeout(60000);
 }, 0);
