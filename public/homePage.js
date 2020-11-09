@@ -20,7 +20,8 @@ ratesBoard.getRatesBoard = (
     ratesBoard.clearTable();
     ratesBoard.fillTable(callback.data);
     };
-  }));
+  })
+);
 
 ratesBoard.getRatesBoard = setTimeout(function () {
   ratesBoard.getRatesBoard = setTimeout(60000);
