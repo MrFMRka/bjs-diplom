@@ -3,41 +3,28 @@
 const exit = new LogoutButton();
 exit.action = () => {
   ApiConnector.logout((callback) => {
-    if (callback.success);
+    if (callback.success)
       location.reload();
   });
 };
 
 ApiConnector.current((callback) => {
-  if (callback.success);
+  if (callback.success)
   ProfileWidget.showProfile(callback.data);
 });
 
 const ratesBoard = new RatesBoard();
-ratesBoard.getRatesBoard = (
-  ApiConnector.getStocks(callback => {
+ratesBoard.getRatesBoard = () => {
+  ApiConnector.getStocks((callback) => {
     if (callback.success) {
-    ratesBoard.clearTable();
-    ratesBoard.fillTable(callback.data);
-    };
-  })
-);
+      ratesBoard.clearTable();
+      ratesBoard.fillTable(callback.data);
+    }
+  });
+};
 
-// Ниже код (в коменнтарии) не работает ни в какую у меня!!! Череп сломался уже.
-// .....
-// ratesBoard.getRatesBoard = () => {
-//   ApiConnector.getStocks((callback) => {
-//     if (callback.success) {
-//       ratesBoard.clearTable();
-//       ratesBoard.fillTable(callback.data);
-//       // console.log(1);
-//     }
-//   });
-// };
-
-ratesBoard.getRatesBoard = setTimeout(function () {
-  ratesBoard.getRatesBoard = setTimeout(60000);
-}, 0);
+ratesBoard.getRatesBoard();
+setTimeout(ratesBoard.getRatesBoard,60000);
 
 const moneyManager = new MoneyManager();
 moneyManager.addMoneyCallback = (data) => {
@@ -46,7 +33,7 @@ moneyManager.addMoneyCallback = (data) => {
       ProfileWidget.showProfile(callback.data);
       moneyManager.setMessage(callback.success, "Баланс успешно пополнен.");
     } else {
-      moneyManager.setMessage(callback.success, "Не выбрана валюта или сумма пополнения ⩽ 0.");
+      moneyManager.setMessage(callback.success, callback.error);
     };
   });
 };
@@ -56,7 +43,7 @@ moneyManager.conversionMoneyCallback = (data) => {
       ProfileWidget.showProfile(callback.data);
       moneyManager.setMessage(callback.success, "Валюта сконвертирована.");
     } else {
-      moneyManager.setMessage(callback.success, "Не выбраны разные валюты или сумма конвертации < 0.");
+      moneyManager.setMessage(callback.success, callback.error);
     };
   });
 };
@@ -66,7 +53,7 @@ moneyManager.sendMoneyCallback = (data) => {
       ProfileWidget.showProfile(callback.data);
       moneyManager.setMessage(callback.success, "Средства переданы.");
     } else {
-      moneyManager.setMessage(callback.success, "Средства не переданы");
+      moneyManager.setMessage(callback.success, callback.error);
     };
   });
 };
@@ -89,7 +76,7 @@ favoritesWidget.addUserCallback = (data) => (
       moneyManager.updateUsersList(callback.data);
       favoritesWidget.setMessage(callback.success, "Пользователь успешно добавлен."); 
     } else {
-      favoritesWidget.setMessage(callback.success, "Введите ID и имя добавляемого пользователя.");
+      favoritesWidget.setMessage(callback.success, callback.error);
     };
   })
 );
@@ -99,9 +86,9 @@ favoritesWidget.removeUserCallback = (data) => (
       favoritesWidget.clearTable();
       favoritesWidget.fillTable(callback.data);
       moneyManager.updateUsersList(callback.data);
-      favoritesWidget.setMessage(callback.success, "Пользователь успешно удален."); 
+      favoritesWidget.setMessage(callback.success, "Пользователь успешно удален.");
     } else {
-      favoritesWidget.setMessage(callback.success, "Ошибка удаления. Обратитесь в ТП.");
+      favoritesWidget.setMessage(callback.success, callback.error);
     };
   })
 );
